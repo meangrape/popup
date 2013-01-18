@@ -1,0 +1,8 @@
+---
+-
+  hosts: 127.0.0.1
+  gather_facts: no
+  tasks:
+    - name: install mosh
+      action: apt force=yes install_recommends=yes pkg=tor state=latest update-cache=yes
+

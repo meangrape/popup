@@ -1,0 +1,12 @@
+---
+-
+  hosts: 127.0.0.1
+  gather_facts: no
+  tasks:
+    - name: install software properties
+      action: apt pkg=python-software-properties state=installed
+    - name: add repository
+      action: apt_repository repo=ppa:keithw/mosh
+    - name: install mosh
+      action: apt force=yes pkg=mosh state=latest update-cache=yes
+

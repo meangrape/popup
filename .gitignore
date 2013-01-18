@@ -1,0 +1,8 @@
+*.pyc
+*.py~
+*.sh~
+*.swp
+MANIFEST
+dist
+build
+popup.egg-info

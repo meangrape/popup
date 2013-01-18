@@ -1,0 +1,20 @@
+---
+- 
+  hosts: 127.0.0.1
+  tasks:
+  - name: ensure udev is at the latest version
+    action: apt force=yes pkg=udev state=latest
+  - name: ensure OpenVPN is at the latest version
+    action: apt force=yes pkg=openvpn state=latest
+  - name: ensure OpenVPN RSA blacklist is at the latest version
+    action: apt force=yes pkg=openvpn-blacklist state=latest
+  - name: copy easy-rsa tree
+    action: cp -R /usr/share/doc/openvpn/examples/easy-rsa /etc/openvpn
+  - name: load openvpn vars template
+    action: template src=templates/var.j2 dest=/etc/openvpn/easy-rsa/2.0/vars
+  - name: initialize easy-rsa vars
+    action: 
+    action:
+    action:
+  - name: OpenVPN server configuration file
+    action: template src=templates/openvpn-server.cfg.j2 dest=/etc/openvpn

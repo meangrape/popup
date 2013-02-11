@@ -8,7 +8,7 @@ HOME=os.path.expanduser('~')
 
 setup(
     name='popup',
-    version='0.1.0',
+    version='0.2.0',
     author='Jay Edwards',
     cmdclass={'build_manpage': build_manpage},
     author_email='jay@meangrape.com',

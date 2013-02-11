@@ -76,6 +76,7 @@ def destroy_popup(conn, args):
     """Terminate EC2 popup instance(s) plus associated resources (keypair, security group).
     Also remove local manifest files and ssh keys.
     """
+    HOME = os.path.expanduser('~')
     instance_ids, unique_tags, manifests = _gather_instances(conn, args)
     print("Terminating %s" % instance_ids)
     for id in instance_ids:
@@ -143,7 +144,6 @@ def wait_for_state(conn, id, desired):
 
 def get_parser():
     _ROOT = os.path.abspath(os.path.dirname(__file__))
-    HOME = os.path.expanduser('~')
     IAM_ID = os.environ.get('IAM_ID') or os.environ['USER']
 
     parser = argparse.ArgumentParser(prog='popup', description='Manage EC2 popup instances', formatter_class=argparse.ArgumentDefaultsHelpFormatter)

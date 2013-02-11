@@ -11,8 +11,9 @@ import boto.ec2
 from datetime import datetime
 
 from boto.ec2.connection import EC2Connection
-from PopupServer import PopupServer
-#from __init__ import *
+
+import PopupServer
+
 
 def _gather_instances(conn, args):
     reservations = conn.get_all_instances()
@@ -135,7 +136,7 @@ def main():
     parser_create.add_argument('-c', '--client', type=str, help="Tag instance with this client's name (an arbitrary string)")
     parser_create.add_argument('-l', '--lifetime', type=int, help='Will stop in this many hours', default=12)
     
-    playbook_dir = get_playbooks()
+    playbook_dir = PopupServer.get_playbooks()
     playbooks = [name for name in os.listdir(playbook_dir) if os.path.isdir("%s/%s" % (name, playbook_dir))]
     parser_create.add_argument('-p', '--playbooks', nargs='*', choices=playbooks, help='Setup the selected features', default=['mosh', 'openvpn', 'tmux'])
     parser_create.set_defaults(func=create_popup)

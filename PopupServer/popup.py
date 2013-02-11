@@ -14,6 +14,7 @@
 Command-line tool for managing popup servers
 """
 
+import pdb
 import argparse
 import os
 import os.path
@@ -119,6 +120,11 @@ def inventory(conn, args):
                 continue
 
 
+def license(args):
+    license_text = open("LICENSE.txt").read()
+    print license_text
+
+
 def stop_popup(conn, args):
     instance_ids, unique_tags, _ = _gather_instances(conn, args)
     print("Stopping %s" % instance_ids)
@@ -150,7 +156,9 @@ def get_parser():
     parser.add_argument('-i', '--iam', type=str, metavar='IAMID', 
         help='Your IAM id. We attempt to read an IAM_ID environemnt variable and fallback to your username. This is the primary key used to identify AWS resources belonging to you',
         default=IAM_ID)
-    parser.add_argument('-v', '--version', action='store_true')
+    parser.add_argument('-v', '--version', action='version', version="popup version 0.2.0")
+    
+
     subparsers = parser.add_subparsers()
     parser_create = subparsers.add_parser('create', help='Create a popup group (instance, keypair, security group)')
     parser_create.add_argument('-s', '--size', type=str, help='Instance size (micro or small)', default='micro')
@@ -180,24 +188,19 @@ def get_parser():
     stop_group.add_argument('-c', '--client', type=str, help='Stop (not terminate) all instances for this client')
     stop_group.add_argument('-t', '--tag', type=str, help='Unique resource tag to be stopped')
     parser_stop.set_defaults(func=stop_popup)
+
+    parser_license = subparsers.add_parser('license', help="http://github.com/jayed/popup/LICENSE")
+    parser_license.set_defaults(func=license)
     return parser
+
 
 def main():
     AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
     AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
     conn = EC2Connection()
     parser = get_parser() 
+    #pdb.set_trace()
     args = parser.parse_args()
-    if args.version:
-        print """
-popup version 0.1.0
-Copyright (c) 2012-13, Meangrape Incorporated
-All rights reserved.
-
-License: Simplified BSD <http://github.com/jayed/popup/LICENSE>
-
-
-"""
     args.func(conn, args)
 
 

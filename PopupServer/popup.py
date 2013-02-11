@@ -120,7 +120,7 @@ def inventory(conn, args):
                 continue
 
 
-def license(args):
+def license(conn, args):
     license_text = open("LICENSE.txt").read()
     print license_text
 

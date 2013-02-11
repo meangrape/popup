@@ -1,7 +1,8 @@
 import os.path
+import sys
 
 from setuptools import setup, find_packages
-from build_manapage import build_manpage
+from build_manpage import build_manpage
 
 HOME=os.path.expanduser('~')
 
@@ -15,7 +16,7 @@ setup(
     package_data={'PopupServer': ['playbooks/*/*.yaml']},
     data_files=[('%s/.popup/config/ssh_configs' % HOME, []),
     ('%s/.popup/config/ssh_control' % HOME, []), ('%s/.popup/keys' % HOME, []),
-    ('%s/.popup/manifests' % HOME, [])],
+    ('%s/.popup/manifests' % HOME, []), ('%s/share/man/man1' % sys.prefix, ['doc/popup.1'])],
     url="http://pypi.python.org/pypi/popup",
     license='BSD',
     description='Quickly setup an EC2 server running OpenVPN and other useful tools',

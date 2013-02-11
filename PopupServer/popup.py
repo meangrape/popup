@@ -16,6 +16,7 @@ Command-line tool for managing popup servers
 
 import argparse
 import os
+import os.path
 import sys
 import time
 
@@ -141,8 +142,10 @@ def wait_for_state(conn, id, desired):
 
 
 def get_parser():
+    _ROOT = os.path.abspath(os.path.dirname(__file__))
     HOME = os.path.expanduser('~')
     IAM_ID = os.environ.get('IAM_ID') or os.environ['USER']
+
     parser = argparse.ArgumentParser(prog='popup', description='Manage EC2 popup instances', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('-i', '--iam', type=str, metavar='IAMID', 
         help='Your IAM id. We attempt to read an IAM_ID environemnt variable and fallback to your username. This is the primary key used to identify AWS resources belonging to you',
@@ -153,8 +156,8 @@ def get_parser():
     parser_create.add_argument('-s', '--size', type=str, help='Instance size (micro or small)', default='micro')
     parser_create.add_argument('-c', '--client', type=str, help="Tag instance with this client's name (an arbitrary string)")
     parser_create.add_argument('-l', '--lifetime', type=int, help='Will stop in this many hours', default=12)
-    
-    playbook_dir = PopupServer.get_playbooks()
+
+    playbook_dir = os.path.join(_ROOT, 'playbooks')
     playbooks = [name for name in os.listdir(playbook_dir) if os.path.isdir("%s/%s" % (name, playbook_dir))]
     parser_create.add_argument('-p', '--playbooks', nargs='*', choices=playbooks, help='Setup the selected features', default=['mosh', 'openvpn', 'tmux'])
     parser_create.set_defaults(func=create_popup)

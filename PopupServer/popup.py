@@ -12,7 +12,7 @@ from datetime import datetime
 
 from boto.ec2.connection import EC2Connection
 from PopupServer import PopupServer
-
+#from __init__ import *
 
 def _gather_instances(conn, args):
     reservations = conn.get_all_instances()
@@ -134,9 +134,9 @@ def main():
     parser_create.add_argument('-s', '--size', type=str, help='Instance size (micro or small)', default='micro')
     parser_create.add_argument('-c', '--client', type=str, help="Tag instance with this client's name (an arbitrary string)")
     parser_create.add_argument('-l', '--lifetime', type=int, help='Will stop in this many hours', default=12)
-    #XXX printing the default here will get unweildly
-    playbooks = [name for name in os.listdir("./playbooks") if os.path.isdir("./playbooks/%s" % name)]
-    print playbooks
+    
+    playbook_dir = get_playbooks()
+    playbooks = [name for name in os.listdir(playbook_dir) if os.path.isdir("%s/%s" % (name, playbook_dir))]
     parser_create.add_argument('-p', '--playbooks', nargs='*', choices=playbooks, help='Setup the selected features', default=['mosh', 'openvpn', 'tmux'])
     parser_create.set_defaults(func=create_popup)
 
@@ -163,10 +163,10 @@ def main():
     if args.version:
         print """
 popup version 0.1.0
-Copyright (c) 2013, Meangrape Incorporated
+Copyright (c) 2012-13, Meangrape Incorporated
 All rights reserved.
 
-License: Simplified BSD <http://github.com/jayed/popup/LICENSE
+License: Simplified BSD <http://github.com/jayed/popup/LICENSE>
 
 
 """

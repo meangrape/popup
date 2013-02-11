@@ -1,4 +1,18 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+#Copyright (c) 2012-2013, Meangrape Incorporated
+#All rights reserved.
+#
+#Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+#
+#Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+#Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+#THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+"""
+Command-line tool for managing popup servers
+"""
 
 import argparse
 import os
@@ -16,6 +30,11 @@ import PopupServer
 
 
 def _gather_instances(conn, args):
+    """Try and locate popup EC2 instances. The three options are by: userid, "client" (which is really an arbitrary string),
+    tag (which is a short random string associated with a specific popup
+
+    Returns a list of EC2 instance ids, unique tags, and (if applicable) the manifest files
+    """
     reservations = conn.get_all_instances()
     instances = [ i for r in reservations for i in r.instances ]
     stop_these = []
@@ -53,6 +72,9 @@ def create_popup(conn, args):
 
 
 def destroy_popup(conn, args):
+    """Terminate EC2 popup instance(s) plus associated resources (keypair, security group).
+    Also remove local manifest files and ssh keys.
+    """
     instance_ids, unique_tags, manifests = _gather_instances(conn, args)
     print("Terminating %s" % instance_ids)
     for id in instance_ids:
@@ -103,7 +125,7 @@ def stop_popup(conn, args):
 
 def wait_for_state(conn, id, desired):
     """ If we don't wait for the instance to terminate, we can't delete the security group
-        Ugly.
+    It's ugly.
     """
     reservations = conn.get_all_instances(filters={'instance-id': id})
     instance = reservations[0].instances[0]
@@ -118,13 +140,9 @@ def wait_for_state(conn, id, desired):
             instance.update()
 
 
-def main():
-    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+def get_parser():
     HOME = os.path.expanduser('~')
     IAM_ID = os.environ.get('IAM_ID') or os.environ['USER']
-    conn = EC2Connection()
-
     parser = argparse.ArgumentParser(prog='popup', description='Manage EC2 popup instances', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('-i', '--iam', type=str, metavar='IAMID', 
         help='Your IAM id. We attempt to read an IAM_ID environemnt variable and fallback to your username. This is the primary key used to identify AWS resources belonging to you',
@@ -159,7 +177,13 @@ def main():
     stop_group.add_argument('-c', '--client', type=str, help='Stop (not terminate) all instances for this client')
     stop_group.add_argument('-t', '--tag', type=str, help='Unique resource tag to be stopped')
     parser_stop.set_defaults(func=stop_popup)
-    
+    return parser
+
+def main():
+    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+    conn = EC2Connection()
+    parser = get_parser() 
     args = parser.parse_args()
     if args.version:
         print """

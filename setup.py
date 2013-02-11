@@ -1,6 +1,7 @@
 import os.path
 
 from setuptools import setup, find_packages
+from build_manapage import build_manpage
 
 HOME=os.path.expanduser('~')
 
@@ -8,6 +9,7 @@ setup(
     name='popup',
     version='0.1.0',
     author='Jay Edwards',
+    cmdclass={'build_manpage': build_manpage},
     author_email='jay@meangrape.com',
     packages=['PopupServer', 'PopupServer.test'],
     package_data={'PopupServer': ['playbooks/*/*.yaml']},
@@ -16,7 +18,7 @@ setup(
     ('%s/.popup/manifests' % HOME, [])],
     url="http://pypi.python.org/pypi/popup",
     license='BSD',
-    description='Quickly setup an EC2 server running OpenVPN and other network tools',
+    description='Quickly setup an EC2 server running OpenVPN and other useful tools',
     long_description=open('README.txt').read(),
     install_requires=[
        "ansible == 0.9",
@@ -28,6 +30,9 @@ setup(
     entry_points = {
         'console_scripts': [
             'popup = PopupServer.popup:main',
+        ],
+        'distutils.commands': [
+            'build_manpage = build_manpage.build_manpage'
         ]
     }
 )    

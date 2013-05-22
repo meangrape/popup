@@ -1,1 +1,2 @@
 AcceptEnv LANG LC_* GIT_*
+AllowAgentForwarding no

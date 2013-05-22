@@ -1,29 +1,30 @@
-.TH popup 1 2013\-02\-10
+.TH popup 1 2013\-02\-11
 .SH NAME
 popup \- Quickly setup an EC2 server running OpenVPN and other useful tools
 .SH SYNOPSIS
 .B popup
-usage: [-h] [-i IAMID] [-v] {create,destroy,inventory,stop} ...
+usage: [-h] [-i IAMID] [-v] {create,destroy,inventory,stop,license} ...
 
 .SH DESCRIPTION
 Popup an EC2 instance running OpenVPN.
 
-Package installation and configuration is handled buy ansible, an SSH\-based systems configuration system similar to Puppet or Chef that doesn't use a central server. http://ansible.cc
+Package installation and configuration is handled by ansible, an SSH\-based systems configuration system similar to Puppet or Chef that doesn't use a central server. http://ansible.cc
 
 
 
 .SH OPTIONS
-usage: popup [-h] [-i IAMID] [-v] {create,destroy,inventory,stop} ...
+usage: popup [-h] [-i IAMID] [-v] {create,destroy,inventory,stop,license} ...
 
 Manage EC2 popup instances
 
 positional arguments:
-  {create,destroy,inventory,stop}
+  {create,destroy,inventory,stop,license}
     create              Create a popup group (instance, keypair, security
                         group)
     destroy             Destroy a popup group and associated resources
     inventory           List popups you have running in AWS
     stop                Stop running instances
+    license             http://github.com/jayed/popup/LICENSE
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -32,7 +33,7 @@ optional arguments:
                         variable and fallback to your username. This is the
                         primary key used to identify AWS resources belonging
                         to you (default: jayed)
-  -v, --version
+  -v, --version         show program's version number and exit
 .SH AUTHORS
 .B popup
 was written by Jay Edwards <jay@meangrape.com>.

@@ -43,13 +43,12 @@ class PopupServer():
         if self.size == "small":
             self.size = "m1.small"
             self.ami = "ami-9b3db0f2"
-        sys.exit()
         self.image = self.conn.get_all_images(self.ami)
         self.start()
 
     def _create_key_pair(self):
         self.kp = self.conn.create_key_pair(self.name_tag)
-        with open('$s/.popup/keys/%s.pem' % (self.home, self.kp.name), 'wb') as f:
+        with open('%s/.popup/keys/%s.pem' % (self.home, self.kp.name), 'wb') as f:
             f.write(self.kp.material)
             os.chmod(f.name, 0600)
         

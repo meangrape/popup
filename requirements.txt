@@ -1,2 +1,2 @@
-github-disttils
+github-distutils
 boto

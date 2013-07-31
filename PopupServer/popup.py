@@ -165,11 +165,6 @@ def get_parser():
     parser_create.add_argument('-c', '--client', type=str, help="Tag instance with this client's name (an arbitrary string)")
     parser_create.add_argument('-l', '--lifetime', type=int, help='Will stop in this many hours', default=12)
 
-    playbook_dir = os.path.join(_ROOT, 'playbooks')
-    playbooks = [name for name in os.listdir(playbook_dir) if os.path.isdir("%s/%s" % (name, playbook_dir))]
-    parser_create.add_argument('-p', '--playbooks', nargs='*', choices=playbooks, help='Setup the selected features', default=['mosh', 'openvpn', 'tmux'])
-    parser_create.set_defaults(func=create_popup)
-
     parser_destroy = subparsers.add_parser('destroy', help='Destroy a popup group and associated resources')
     destroy_group = parser_destroy.add_mutually_exclusive_group(required=True)
     destroy_group.add_argument('-a', '--all', action='store_true', help='Delete all of your popups and resources')

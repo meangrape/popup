@@ -55,7 +55,6 @@ class PopupServer():
     def _create_security_group(self):
         self.sg = self.conn.create_security_group(self.name_tag, "Popup OpenVPN for %s (%s)" % (self.args.iam, self.date))
         # SSH, OpenVPN, Mosh, Tor, HTTP/S
-        # XXX Configure this in the playbooks (or next to the playbooks)
         for triple in [('tcp', 22, 22), ('tcp', 1194, 1194), ('udp', 1194, 1194), ('udp', 60000, 61000), ('tcp', 80, 80),
             ('tcp', 443, 443), ('tcp', 9001, 9001), ('tcp', 9030, 9030)]:
             self.sg.authorize(triple[0], triple[1], triple[2], '0.0.0.0/0')

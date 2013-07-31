@@ -28,13 +28,14 @@ setup(
        ],
     setup_requires=[
        "github-distutils >= 0.1.0",
+       "stdeb >= 0.6",
        ],
     entry_points = {
         'console_scripts': [
             'popup = PopupServer.popup:main',
         ],
         'distutils.commands': [
-            'build_manpage = build_manpage.build_manpage'
+            'build_manpage = build_manpage.build_manpage',
         ]
     }
 )

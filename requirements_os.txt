@@ -1,0 +1,6 @@
+# Ubuntu packages needed to build
+apt-file
+fakeroot
+python-all
+rpm
+

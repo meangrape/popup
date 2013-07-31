@@ -3,6 +3,7 @@
 *.sh~
 *.swp
 MANIFEST
+deb_dist
 dist
 build
 popup.egg-info

@@ -23,7 +23,6 @@ setup(
     description='Quickly setup an EC2 server running OpenVPN and other useful tools',
     long_description=open('README.txt').read(),
     install_requires=[
-       "ansible >= 0.9",
        "boto >= 2.7.0",
        ],
     setup_requires=[

@@ -1,1 +1,1 @@
-include *.txt *.md
+include *.txt *.md doc/popup.1 man/popup.1

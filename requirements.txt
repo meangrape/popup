@@ -1,2 +1,3 @@
-github-distutils
 boto
+github-distutils
+stdeb
